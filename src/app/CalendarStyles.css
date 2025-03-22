@@ -1,0 +1,25 @@
+.custom-calendar .p-datepicker-calendar td {
+    position: relative;
+}
+
+/* Target Sunday (first column in both the header and dates) */
+.custom-calendar .p-datepicker-calendar th:nth-child(1), /* Header (Su) */
+.custom-calendar .p-datepicker-calendar td:nth-child(1) span { /* Dates */
+    color: #be2326 !important; 
+    /* font-weight: bold; */
+}
+
+/* Target Saturday (last column in both the header and dates) */
+.custom-calendar .p-datepicker-calendar th:nth-child(7), /* Header (Sa) */
+.custom-calendar .p-datepicker-calendar td:nth-child(7) span { /* Dates */
+    color: green !important; 
+    /* font-weight: bold; */
+}
+/* Change the background color of the circle for the current date */
+/* Change the background color of the circle for the current date */
+.custom-calendar .p-datepicker-calendar td.p-highlight {
+    background-color: purple !important; /* Set circle color to purple */
+    color: white !important; /* Set text color to white */
+    border-radius: 50%; /* Ensure it stays circular */
+    font-weight: bold;
+}

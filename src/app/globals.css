@@ -12,3 +12,21 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+.react-calendar{
+    width: 100% !important;
+    border: none !important;
+    font-family: "Inter", sans-serif !important;
+}
+.react-calendar__tile--active{
+    background-color: #C3ebfa !important;
+    color: #000 !important;
+}
+
+/* .react-calendar__month-view__days__day--weekend {
+    color: green !important;
+  } */
+
+  .react-calendar__navigation__label__labelText{
+    font-weight: 600 !important;
+  }
