@@ -20,7 +20,8 @@ const config: Config = {
         pirple:"#cfceff",
         purpleLight:'#f1f0ff',
         yellow:'#fae27c',
-        yellowLight:'#fefce8'
+        yellowLight:'#fefce8',
+        red: '#be2326',
       }
     },
   },
