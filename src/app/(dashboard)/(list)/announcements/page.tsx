@@ -35,8 +35,8 @@ const AnnouncementsListPage = () => {
           </Link> */}
           {role === 'admin' &&(
              <>
-             <FormModal table="announcement" type="delete" id={item.id} />
              <FormModal table="announcement" type="update" data={item} />
+             <FormModal table="announcement" type="delete" id={item.id} />
              </>
 
           //   <button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">

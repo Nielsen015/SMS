@@ -1,3 +1,4 @@
+import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
@@ -34,14 +35,20 @@ const EventsListPage = () => {
       <td className="hidden md:table-cell">{item.endTime}</td>
       <td>
         <div className='flex items-center gap-2'>
-          <Link href={`/list/teachers/${item.id}`}>
-          <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
-            <Image src='/edit.png' alt='' width={16} height={16} />
-          </button>
-          </Link>
-          {role === 'admin' &&(<button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
-            <Image src='/delete.png' alt='' width={16} height={16} />
-          </button>)}
+          {role === 'admin' &&(
+          // <Link href={`/list/teachers/${item.id}`}>
+          // <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
+          //   <Image src='/edit.png' alt='' width={16} height={16} />
+          // </button>
+          // </Link>
+          //   <button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
+          //   <Image src='/delete.png' alt='' width={16} height={16} />
+          // </button>
+          <>
+          <FormModal table="event" type="update" data={item} />
+          <FormModal table="event" type="delete" id={item.id} />
+          </>
+        )}
           
         </div>
       </td>
@@ -61,9 +68,12 @@ const EventsListPage = () => {
             <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
               <Image src='/sort.png' width={14} height={14} alt='' />
             </button> 
-            {role === 'admin' &&(<button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
-              <Image src='/plus.png' width={14} height={14} alt='' />
-            </button>)}
+            {role === 'admin' &&(
+              <FormModal table="event" type="create" />
+            //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
+            //   <Image src='/plus.png' width={14} height={14} alt='' />
+            // </button>
+          )}
           </div>
         </div>
       </div>

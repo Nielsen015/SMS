@@ -38,8 +38,8 @@ const ParentListPage = () => {
         <div className='flex items-center gap-2'>
           {role === 'admin' &&(
             <>
-            <FormModal table="teacher" type="update" data={item} />
-            <FormModal table="teacher" type="delete" id={item.id} />
+            <FormModal table="parent" type="update" data={item} />
+            <FormModal table="parent" type="delete" id={item.id} />
             </>
           // <Link href={`/teachers/${item.id}`}>
           // <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
@@ -74,7 +74,7 @@ const ParentListPage = () => {
             //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
             //   <Image src='/plus.png' width={14} height={14} alt='' />
             // </button>
-            <FormModal table="teacher" type="create" />
+            <FormModal table="parent" type="create" />
           )}
           </div>
         </div>
