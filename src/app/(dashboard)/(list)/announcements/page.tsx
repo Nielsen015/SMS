@@ -1,3 +1,4 @@
+import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
@@ -27,14 +28,21 @@ const AnnouncementsListPage = () => {
       <td className="hidden md:table-cell">{item.date}</td>
       <td>
         <div className='flex items-center gap-2'>
-          <Link href={`/list/teachers/${item.id}`}>
+          {/* <Link href={`/announcements/${item.id}`}>
           <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
             <Image src='/edit.png' alt='' width={16} height={16} />
           </button>
-          </Link>
-          {role === 'admin' &&(<button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
-            <Image src='/delete.png' alt='' width={16} height={16} />
-          </button>)}
+          </Link> */}
+          {role === 'admin' &&(
+             <>
+             <FormModal table="announcement" type="delete" id={item.id} />
+             <FormModal table="announcement" type="update" data={item} />
+             </>
+
+          //   <button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
+          //   <Image src='/delete.png' alt='' width={16} height={16} />
+          // </button>
+          )}
           
         </div>
       </td>
@@ -54,9 +62,12 @@ const AnnouncementsListPage = () => {
             <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
               <Image src='/sort.png' width={14} height={14} alt='' />
             </button> 
-            {role === 'admin' &&(<button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
-              <Image src='/plus.png' width={14} height={14} alt='' />
-            </button>)}
+            {role === 'admin' &&(
+            //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
+            //   <Image src='/plus.png' width={14} height={14} alt='' />
+            // </button>
+            <FormModal table="announcement" type="create" />
+          )}
           </div>
         </div>
       </div>

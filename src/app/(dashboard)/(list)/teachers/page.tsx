@@ -1,3 +1,4 @@
+import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
@@ -48,9 +49,12 @@ const TeacherListPage = () => {
             <Image src='/view.png' alt='' width={16} height={16} />
           </button>
           </Link>
-          {role === 'admin' &&(<button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
-            <Image src='/delete.png' alt='' width={16} height={16} />
-          </button>)}
+          {role === 'admin' &&(
+          //   <button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
+          //   <Image src='/delete.png' alt='' width={16} height={16} />
+          // </button>
+          <FormModal table="teacher" type="delete" id={item.id} />
+        )}
           
         </div>
       </td>
@@ -70,9 +74,12 @@ const TeacherListPage = () => {
             <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
               <Image src='/sort.png' width={14} height={14} alt='' />
             </button> 
-            {role == 'admin' && (<button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
-              <Image src='/plus.png' width={14} height={14} alt='' />
-            </button>)}
+            {role == 'admin' && (
+            //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
+            //   <Image src='/plus.png' width={14} height={14} alt='' />
+            // </button>
+            <FormModal table="teacher" type="create" />
+          )}
           </div>
         </div>
       </div>

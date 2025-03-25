@@ -116,7 +116,20 @@
   background-color: #fdf2fb !important;
 }
 
+.rbc-event {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 5px !important;
+  margin: 5px !important;
+}
 .rbc-event-label{
   color: gray !important;
-  margin-bottom: 5px !important;
+  margin-bottom: 3px !important;
 }
+
+/* @media (max-width: 124px) {
+
+.rbc-month-view {
+  display: flex !important;
+}
+} */
