@@ -133,3 +133,10 @@
   display: flex !important;
 }
 } */
+
+/* remove blue hight on phone */
+.PhoneInputInput:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+}

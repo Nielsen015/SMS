@@ -29,7 +29,7 @@ const FormModal = ({table,type,data,id}:{
 
     const Form = () =>{
       return type == 'delete' && id ? (
-      <form className="p-4 flex flex-col gap-4" action=''>
+      <form className="p-4 flex flex-col gap-4">
         <span className="text-center font-medium">All data will be deleted. Are you sure you want to delete this {table}?</span>
         <div className='flex flex-row gap-4 items-center justify-center'>
         <button className="text-gray-500 py-2 px-4 rounded-md border border-gray-500 w-max" onClick={()=>setOpen(false)}>Cancel</button>
