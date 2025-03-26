@@ -18,7 +18,8 @@ const schema = z.object({
     .regex(/[\W_]/, { message: 'Password must contain at least one Special Character(@!#$%)!' }),
   firstName: z.string().min(1, { message: 'First Name is required' }),
   lastName: z.string().min(1, { message: 'Last Name is required' }),
-  phone: z.string().max(1, { message: 'Phone is required' }),
+  phone: z.string().min(1, { message: 'Phone is required' }),
+  // .max(13,{message:'Invalid Phone Number'}),
   address: z.string().min(1, { message: 'Address is required' }),
   bloodType: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],{message:'blood group can only be A+, A-, B+, B-, AB+, AB-, O+, O-'}).optional().or(z.literal('')),
   birthday: z.date({ message: 'Date is required!' }),
@@ -88,6 +89,13 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
     onChange={setValue}/>
     {errors.phone?.message && <p className="text-xs text-[#be2326]">{errors.phone?.message.toString()}</p>}
     </div>
+    {/* <InputField
+          label="Phone"
+          name="phone"
+          defaultValue={data?.phone}
+          register={register}
+          error={errors.phone}
+        /> */}
         <InputField
           label="Address"
           name="address"
