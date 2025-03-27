@@ -5,6 +5,7 @@ export let role = "admin";
 export const teachersData = [
   {
     id: 1,
+    name: "John Doe",
     teacherId: "1234567890",
     username: "John Doe",
     firstName:'John',

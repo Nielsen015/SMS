@@ -5,13 +5,44 @@ import { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import dynamic from "next/dynamic";
 import NotFound from "@/app/not-found";
+import Loader from "./Loader";
 // import TeacherForm from "./forms/TeacherForm";
 // import StudentForm from "./forms/StudentForm";
 const TeacherForm = dynamic(()=> import('./forms/TeacherForm'),{
-  loading: () => <h1>Loading...</h1>,
+  loading: () => <Loader />,
 });
 const StudentForm = dynamic(()=> import('./forms/StudentForm'),{
-  loading: () => <h1>Loading...</h1>,
+  loading: () => <Loader />,
+});
+const ParentForm = dynamic(()=> import('./forms/ParentForm'),{
+  loading: () => <Loader />,
+});
+const AnnouncementForm = dynamic(()=> import('./forms/AnnouncementForm'),{
+  loading: () => <Loader />,
+});
+const SubjectForm = dynamic(()=> import('./forms/SubjectForm'),{
+  loading: () => <Loader />,
+});
+const AttendanceForm = dynamic(()=> import('./forms/AttendanceForm'),{
+  loading: () => <Loader />,
+});
+const ExamForm = dynamic(()=> import('./forms/ExamForm'),{
+  loading: () => <Loader />,
+});
+const EventForm = dynamic(()=> import('./forms/EventForm'),{
+  loading: () => <Loader />,
+});
+const ClassForm = dynamic(()=> import('./forms/ClassForm'),{
+  loading: () => <Loader />,
+});
+const LessonForm = dynamic(()=> import('./forms/LessonForm'),{
+  loading: () => <Loader />,
+});
+const AssignmentForm = dynamic(()=> import('./forms/AssignmentForm'),{
+  loading: () => <Loader />,
+});
+const ResultForm = dynamic(()=> import('./forms/ResultForm'),{
+  loading: () => <Loader />,
 });
 
 const forms: {
@@ -19,6 +50,16 @@ const forms: {
 } = {
   teacher: (type,data) => <TeacherForm type={type} data={data} />,
   student: (type,data) => <StudentForm type={type} data={data} />,
+  parent: (type,data) => <ParentForm type={type} data={data} />,
+  announcement: (type,data) => <AnnouncementForm type={type} data={data} />,
+  subject: (type,data) => <SubjectForm type={type} data={data} />,
+  class: (type,data) => <ClassForm type={type} data={data} />,
+  lesson: (type,data) => <LessonForm type={type} data={data} />,
+  exam: (type,data) => <ExamForm type={type} data={data} />,
+  assignment: (type,data) => <AssignmentForm type={type} data={data} />,
+  event: (type,data) => <EventForm type={type} data={data} />,
+  attendance: (type,data) => <AttendanceForm type={type} data={data} />,
+  result: (type,data) => <ResultForm type={type} data={data} />,
 }
 const FormModal = ({table,type,data,id}:{
     table:
@@ -59,7 +100,7 @@ const FormModal = ({table,type,data,id}:{
       ):(<NotFound />);
     }
   return (
-     <>
+     <> 
   <button aria-label="actions" className={`${size} flex items-center justify-center rounded-full ${bgColor}`}
   onClick={()=>setOpen(true)}
   >

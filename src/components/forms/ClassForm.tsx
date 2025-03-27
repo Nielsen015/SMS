@@ -7,9 +7,6 @@ import InputField from "../InputField";
 import PhoneInput from "react-phone-number-input";
 import { useState } from "react";
 import Image from "next/image";
-import { E164Number } from 'libphonenumber-js/core';
-
-
 
 const schema = z.object({
   username: z.string()
@@ -36,9 +33,8 @@ const schema = z.object({
 });
 // Pass the types of the schema to the useForm hook
 type Inputs =z.infer<typeof schema>; 
-const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }) => {
-  const [value, setValue] = useState<E164Number | undefined>()
-  // const [value, setValue] = useState()
+const ClassForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }) => {
+  const [value, setValue] = useState()
 
   const {
     register,
@@ -56,7 +52,7 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
   })
   return (
     <form className="flex flex-col gap-8" autoComplete="off" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">Create a New Teacher</h1>
+      <h1 className="text-xl font-semibold">Create a New Student</h1>
       <span className="text-xs text-gray-400 font-medium">Authentication Information</span>
       <div className='flex justify-between flex-wrap gap-4'> 
       <InputField label='Username' name='username' defaultValue={data?.username} register={register} error={errors?.username} />
@@ -79,7 +75,7 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
           register={register}
           error={errors.lastName}
         />
-            <div className='flex flex-col gap-2 rounded-sm w-full md:w-1/4'>
+            {/* <div className='flex flex-col gap-2 rounded-sm w-full md:w-1/4'>
     <label htmlFor="" className="text-xs text-gray-500">Phone Number</label>
     <PhoneInput
     className="border border-gray-300 p-2 rounded-md text-sm w-full"
@@ -87,12 +83,12 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
     label='Phone Number'
     defaultValue={data?.phone}
     {...register('phone')}
-    // international
+    international
     value={value}
     name='phone'
     onChange={setValue}/>
     {errors.phone?.message && <p className="text-xs text-[#be2326]">{errors.phone?.message.toString()}</p>}
-    </div>
+    </div> */}
     {/* <InputField
           label="Phone"
           name="phone"
@@ -146,4 +142,4 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
   )
 };
 
-export default TeacherForm;
+export default ClassForm;

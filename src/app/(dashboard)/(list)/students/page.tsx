@@ -1,3 +1,5 @@
+import BulkUpload from "@/components/BulkUpload"
+import DownloadFiles from "@/components/DownloadFiles"
 import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
@@ -71,7 +73,9 @@ const StudentListPage = () => {
             </button> 
             <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
               <Image src='/sort.png' width={14} height={14} alt='' />
-            </button> 
+            </button>
+            <DownloadFiles />
+            <BulkUpload /> 
             {role === 'admin' &&(
             //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
             //   <Image src='/plus.png' width={14} height={14} alt='' />

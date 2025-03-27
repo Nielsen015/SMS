@@ -36,7 +36,7 @@ const schema = z.object({
 });
 // Pass the types of the schema to the useForm hook
 type Inputs =z.infer<typeof schema>; 
-const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }) => {
+const ParentForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }) => {
   const [value, setValue] = useState<E164Number | undefined>()
   // const [value, setValue] = useState()
 
@@ -146,4 +146,4 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
   )
 };
 
-export default TeacherForm;
+export default ParentForm;
