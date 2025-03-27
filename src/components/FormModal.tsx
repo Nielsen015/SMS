@@ -3,8 +3,23 @@
 import Image from "next/image";
 import { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
-import TeacherForm from "./forms/TeacherForm";
+import dynamic from "next/dynamic";
+import NotFound from "@/app/not-found";
+// import TeacherForm from "./forms/TeacherForm";
+// import StudentForm from "./forms/StudentForm";
+const TeacherForm = dynamic(()=> import('./forms/TeacherForm'),{
+  loading: () => <h1>Loading...</h1>,
+});
+const StudentForm = dynamic(()=> import('./forms/StudentForm'),{
+  loading: () => <h1>Loading...</h1>,
+});
 
+const forms: {
+  [key: string]: (type:'create' | 'update', data?:any) => JSX.Element;
+} = {
+  teacher: (type,data) => <TeacherForm type={type} data={data} />,
+  student: (type,data) => <StudentForm type={type} data={data} />,
+}
 const FormModal = ({table,type,data,id}:{
     table:
     | "teacher"
@@ -36,7 +51,12 @@ const FormModal = ({table,type,data,id}:{
         <button className="bg-[#be2326] text-white py-2 px-4 rounded-md border-none w-max">Delete</button>
         </div>
         
-      </form>): (<TeacherForm type="create"/>);
+      </form>):type === 'create' || type ==='update' ? (
+        // return appropriate form based on table and type
+        forms[table](type,data)
+        // <TeacherForm type="update" data={data}/>
+        // <StudentForm type="create" data={data}/>
+      ):(<NotFound />);
     }
   return (
      <>
