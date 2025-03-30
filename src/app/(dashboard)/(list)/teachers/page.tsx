@@ -7,7 +7,7 @@ import TableSearch from "@/components/TableSearch"
 import { role, teachersData } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
-import { Class, Subject, Teacher } from "@prisma/client"
+import { Class, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
 
@@ -54,18 +54,37 @@ const renderRow = (item:TeacherList)=>(
     </td>
   </tr>
 ); //not returning this block
-const TeacherListPage = async ({searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+const TeacherListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
-  const [data,count] = await prisma.$transaction([
+  const query: Prisma.TeacherWhereInput={}
 
-    
-     prisma.teacher.findMany({
-      where:{
-        lessons:{
-          some:{classId:parseInt(queryparams.classId!)}
+    // URL Params conditions
+    if (queryparams){
+      for(const [key,value] of Object.entries(queryparams)){
+        if(value !== undefined){
+  
+          switch(key){
+            case 'classId':
+              query.lessons = {
+                some:{
+                  classId: parseInt(value)
+                }
+            };
+            break;
+            case 'search':
+              query.name = {
+                contains:value, mode: 'insensitive'
+              }
+          }
         }
-      },
+      }
+    }
+    // get teacher's data as well as count, count will be useful for pagination
+  const [data,count] = await prisma.$transaction([
+     prisma.teacher.findMany({
+      where: query,
       include:{
         subjects: true,
         classes: true,
@@ -74,11 +93,7 @@ const TeacherListPage = async ({searchParams}:{searchParams:{[key:string]:string
       skip: ITEM_PER_PAGE * (p - 1),
     }),
      prisma.teacher.count({
-      where:{
-        lessons:{
-          some:{classId:parseInt(queryparams.classId!)}
-        }
-      }
+      where: query
      })
   ]);
 

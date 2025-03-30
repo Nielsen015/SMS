@@ -5,6 +5,7 @@ import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
 import { role, studentsData } from "@/lib/data"
+import prisma from "@/lib/prisma"
 import Image from 'next/image'
 import Link from "next/link"
 
@@ -28,38 +29,79 @@ const columns =[
   {header:'Address',accessor:'address',className:'hidden lg:table-cell'},
   {header:'Actions',accessor:'action'},
 ]
-const StudentListPage = () => {
-  const renderRow = (item:Student)=>(
-    <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
-      <td className="flex items-center gap-4 p-4">
-        <Image alt='' src={item.photo} width={40} height={40} className="md:hidden xl:block w-10 h-10 rounded-full object-cover" />
-        <div className='flex flex-col'>
-        <h3 className="font-semibold">{item.name}</h3>
-        <p className="text-xs text-gray-500">{item.class}</p>
+const renderRow = (item:Student)=>(
+  <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
+    <td className="flex items-center gap-4 p-4">
+      <Image alt='' src={item.photo} width={40} height={40} className="md:hidden xl:block w-10 h-10 rounded-full object-cover" />
+      <div className='flex flex-col'>
+      <h3 className="font-semibold">{item.name}</h3>
+      <p className="text-xs text-gray-500">{item.class}</p>
+    </div>
+    </td>
+    <td className="hidden md:table-cell">{item.studentId}</td>
+    <td className="hidden md:table-cell">{item.grade}</td>
+    <td className="hidden md:table-cell">{item.phone}</td>
+    <td className="hidden md:table-cell">{item.address}</td>
+    <td>
+      <div className='flex items-center gap-2 cursor-pointer'>
+        <Link href={`/students/${item.id}`}>
+        <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
+          <Image src='/view.png' alt='' width={16} height={16} />
+        </button>
+        </Link>
+        {role === 'admin' &&(
+        //   <button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
+        //   <Image src='/delete.png' alt='' width={16} height={16} />
+        // </button>
+        <FormModal table="student" type="delete" id={item.id} />
+      )}
+        
       </div>
-      </td>
-      <td className="hidden md:table-cell">{item.studentId}</td>
-      <td className="hidden md:table-cell">{item.grade}</td>
-      <td className="hidden md:table-cell">{item.phone}</td>
-      <td className="hidden md:table-cell">{item.address}</td>
-      <td>
-        <div className='flex items-center gap-2 cursor-pointer'>
-          <Link href={`/students/${item.id}`}>
-          <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
-            <Image src='/view.png' alt='' width={16} height={16} />
-          </button>
-          </Link>
-          {role === 'admin' &&(
-          //   <button className='w-7 h-7 flex items-center justify-center bg-pirple rounded-full' aria-label="view">
-          //   <Image src='/delete.png' alt='' width={16} height={16} />
-          // </button>
-          <FormModal table="student" type="delete" id={item.id} />
-        )}
-          
-        </div>
-      </td>
-    </tr>
-  ); //not returning this block
+    </td>
+  </tr>
+); //not returning this block
+const StudentListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+  const {page, ...queryparams} = searchParams;
+  const p = page? parseInt(page): 1;
+  const query: Prisma.TeacherWhereInput={}
+
+    // URL Params conditions
+    if (queryparams){
+      for(const [key,value] of Object.entries(queryparams)){
+        if(value !== undefined){
+  
+          switch(key){
+            case 'classId':
+              query.lessons = {
+                some:{
+                  classId: parseInt(value)
+                }
+            };
+            break;
+            case 'search':
+              query.name = {
+                contains:value, mode: 'insensitive'
+              }
+          }
+        }
+      }
+    }
+    // get teacher's data as well as count, count will be useful for pagination
+  const [data,count] = await prisma.$transaction([
+     prisma.teacher.findMany({
+      where: query,
+      include:{
+        subjects: true,
+        classes: true,
+      },
+      take: ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
+    }),
+     prisma.teacher.count({
+      where: query
+     })
+  ]);
   return (
     <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
       {/* TOP */}
