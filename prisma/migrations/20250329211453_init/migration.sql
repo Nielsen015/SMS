@@ -29,6 +29,7 @@ CREATE TABLE "Student" (
     "classId" INTEGER NOT NULL,
     "gradeId" INTEGER NOT NULL,
     "birthday" TIMESTAMP(3) NOT NULL,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
 );
@@ -47,6 +48,7 @@ CREATE TABLE "Teacher" (
     "sex" "UserSex" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "birthday" TIMESTAMP(3) NOT NULL,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Teacher_pkey" PRIMARY KEY ("id")
 );
@@ -61,6 +63,7 @@ CREATE TABLE "Parent" (
     "phone" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Parent_pkey" PRIMARY KEY ("id")
 );
@@ -69,6 +72,8 @@ CREATE TABLE "Parent" (
 CREATE TABLE "Grade" (
     "id" SERIAL NOT NULL,
     "level" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Grade_pkey" PRIMARY KEY ("id")
 );
@@ -80,6 +85,8 @@ CREATE TABLE "Class" (
     "capacity" INTEGER NOT NULL,
     "supervisorId" TEXT,
     "gradeId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Class_pkey" PRIMARY KEY ("id")
 );
@@ -88,6 +95,8 @@ CREATE TABLE "Class" (
 CREATE TABLE "Subject" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Subject_pkey" PRIMARY KEY ("id")
 );
@@ -102,6 +111,8 @@ CREATE TABLE "Lesson" (
     "subjectId" INTEGER NOT NULL,
     "classId" INTEGER NOT NULL,
     "teacherId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Lesson_pkey" PRIMARY KEY ("id")
 );
@@ -113,6 +124,8 @@ CREATE TABLE "Exam" (
     "startTime" TIMESTAMP(3) NOT NULL,
     "endTime" TIMESTAMP(3) NOT NULL,
     "lessonId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Exam_pkey" PRIMARY KEY ("id")
 );
@@ -146,6 +159,8 @@ CREATE TABLE "Attendance" (
     "present" BOOLEAN NOT NULL,
     "studentId" TEXT NOT NULL,
     "lessonId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Attendance_pkey" PRIMARY KEY ("id")
 );
@@ -158,6 +173,8 @@ CREATE TABLE "Event" (
     "startTime" TIMESTAMP(3) NOT NULL,
     "endTime" TIMESTAMP(3) NOT NULL,
     "classId" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
@@ -169,8 +186,23 @@ CREATE TABLE "Announcement" (
     "description" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "classId" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Announcement_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Message" (
+    "id" SERIAL NOT NULL,
+    "content" TEXT NOT NULL,
+    "senderId" TEXT NOT NULL,
+    "receiverId" TEXT NOT NULL,
+    "sendType" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastUpdated" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

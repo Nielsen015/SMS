@@ -33,6 +33,7 @@ model Student {
   attendances Attendance[]
   results     Result[]
   birthday    DateTime
+  lastUpdated DateTime @updatedAt
 }
 
 model Teacher {
@@ -52,6 +53,7 @@ model Teacher {
   classes   Class[]
   // messages Message[]
   birthday  DateTime
+  lastUpdated DateTime @updatedAt
 }
 
 model Parent {
@@ -64,6 +66,7 @@ model Parent {
   address   String
   createdAt DateTime  @default(now())
   students  Student[]
+  lastUpdated DateTime @updatedAt
 }
 
 model Grade {
@@ -72,6 +75,8 @@ model Grade {
 
   students Student[]
   classess Class[]
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Class {
@@ -87,6 +92,8 @@ model Class {
   grade         Grade          @relation(fields: [gradeId], references: [id])
   events        Event[]
   announcements Announcement[]
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Subject {
@@ -94,6 +101,8 @@ model Subject {
   name     String    @unique
   teachers Teacher[]
   lessons  Lesson[]
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Lesson {
@@ -112,6 +121,8 @@ model Lesson {
   exams       Exam[]
   assignments Assignment[]
   attendances Attendance[]
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Exam {
@@ -123,6 +134,8 @@ model Exam {
   lessonId Int
   lesson   Lesson   @relation(fields: [lessonId], references: [id])
   results  Result[]
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Assignment {
@@ -157,6 +170,8 @@ model Attendance {
   student   Student @relation(fields: [studentId], references: [id])
   lessonId  Int
   lesson    Lesson  @relation(fields: [lessonId], references: [id])
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Event {
@@ -168,6 +183,8 @@ model Event {
 
   classId Int?
   class   Class? @relation(fields: [classId], references: [id])
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
 model Announcement {
@@ -178,16 +195,19 @@ model Announcement {
 
   classId Int?
   class   Class? @relation(fields: [classId], references: [id])
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
 }
 
-// model Message{
-//   id Int @id @default(autoincrement())
-//   content String
-//   senderId String
-//   sender Teacher @relation(fields: [senderId], references: [id])
-//   createdAt DateTime @default(now())
-//   lastUpdated DateTime @updatedAt
-// }
+model Message{
+  id Int @id @default(autoincrement())
+  content String
+  senderId String
+  receiverId String
+  sendType String
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @updatedAt
+}
 
 enum UserSex {
   MALE
