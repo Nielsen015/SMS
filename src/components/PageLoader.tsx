@@ -24,7 +24,7 @@ const PageLoader = () => {
 
   useEffect(() => {
     const handleLoad = () => setLoading(false);
-    const timer = setTimeout(handleLoad, 4000); // Fallback
+    const timer = setTimeout(handleLoad, 3000); // Fallback
 
     window.addEventListener('load', handleLoad);
     return () => {
