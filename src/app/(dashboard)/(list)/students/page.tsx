@@ -6,21 +6,14 @@ import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
 import { role, studentsData } from "@/lib/data"
 import prisma from "@/lib/prisma"
+import { ITEM_PER_PAGE } from "@/lib/settings"
+import { Class, Prisma, Student } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
 
-type Student = {
-  id:number;
-  studentId:string;
-  name:string;
-  email?:string;
-  phone?:string;
-  address:string;
-  grade:number;
-  class:string[];
-  photo:string;
 
-}
+// import student data from prisma
+type StudentList = Student & {class:Class}
 const columns =[
   {header:'Info',accessor:'info'},
   {header:'Student ID',accessor:'studendtId',className:'hidden md:table-cell'},
@@ -29,17 +22,17 @@ const columns =[
   {header:'Address',accessor:'address',className:'hidden lg:table-cell'},
   {header:'Actions',accessor:'action'},
 ]
-const renderRow = (item:Student)=>(
+const renderRow = (item:StudentList)=>(
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
     <td className="flex items-center gap-4 p-4">
-      <Image alt='' src={item.photo} width={40} height={40} className="md:hidden xl:block w-10 h-10 rounded-full object-cover" />
+      <Image alt='' src={item.img || '/noAvatar.png'} width={40} height={40} className="md:hidden xl:block w-10 h-10 rounded-full object-cover" />
       <div className='flex flex-col'>
       <h3 className="font-semibold">{item.name}</h3>
-      <p className="text-xs text-gray-500">{item.class}</p>
+      <p className="text-xs text-gray-500">{item.class.name}</p>
     </div>
     </td>
-    <td className="hidden md:table-cell">{item.studentId}</td>
-    <td className="hidden md:table-cell">{item.grade}</td>
+    <td className="hidden md:table-cell">{item.username}</td>
+    <td className="hidden md:table-cell">{item.class.name[0]}</td>
     <td className="hidden md:table-cell">{item.phone}</td>
     <td className="hidden md:table-cell">{item.address}</td>
     <td>
@@ -64,7 +57,7 @@ const StudentListPage = async (
   {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
-  const query: Prisma.TeacherWhereInput={}
+  const query: Prisma.StudentWhereInput={}
 
     // URL Params conditions
     if (queryparams){
@@ -72,33 +65,38 @@ const StudentListPage = async (
         if(value !== undefined){
   
           switch(key){
-            case 'classId':
-              query.lessons = {
-                some:{
-                  classId: parseInt(value)
+            case 'teacherId':
+              query.class = {
+                lessons: {
+
+                  some:{
+                    teacherId: value
+                  }
                 }
             };
             break;
             case 'search':
               query.name = {
                 contains:value, mode: 'insensitive'
-              }
+              };
+              break;
+            default:
+              break;
           }
         }
       }
     }
-    // get teacher's data as well as count, count will be useful for pagination
+    // get student's data as well as count, count will be useful for pagination
   const [data,count] = await prisma.$transaction([
-     prisma.teacher.findMany({
+     prisma.student.findMany({
       where: query,
       include:{
-        subjects: true,
-        classes: true,
+        class: true,
       },
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (p - 1),
     }),
-     prisma.teacher.count({
+     prisma.student.count({
       where: query
      })
   ]);
@@ -128,9 +126,9 @@ const StudentListPage = async (
         </div>
       </div>
       {/* LIST */}
-      <Tables columns={columns} renderRow={renderRow} data={studentsData}/>
+      <Tables columns={columns} renderRow={renderRow} data={data}/>
       {/* Pagination */}
-        <Pagination />
+        <Pagination page={p} count={count}/>
     </div>
   )
 }
