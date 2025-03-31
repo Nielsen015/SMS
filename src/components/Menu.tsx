@@ -92,6 +92,12 @@ const menuItems = [
         label: "Announcements",
         href: "/announcements",
         visible: ["admin", "teacher", "student", "parent"],
+      },      
+      {
+        icon: "/online-resource.png",
+        label: "Resources",
+        href: "/announcements",
+        visible: ["admin", "teacher", "student", "parent"],
       },
     ],
   },
@@ -99,6 +105,18 @@ const menuItems = [
     title: "OTHER",
     items: [
       {
+        icon: "/book.png",
+        label: "Library",
+        href: "/profile",
+        visible: ["admin", "student", "parent"],
+      },
+      {
+        icon: "/bus.png",
+        label: "Transport",
+        href: "/profile",
+        visible: ["admin", "parent"],
+      },     
+       {
         icon: "/profile.png",
         label: "Profile",
         href: "/profile",
