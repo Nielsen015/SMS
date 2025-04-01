@@ -2,6 +2,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 const LoginPage = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       {/* Preload the background image */}
@@ -116,6 +118,10 @@ const LoginPage = () => {
                 <a href="javascript:void(0);" className="text-blue-500 font-medium hover:underline ml-1">
                   Register here
                 </a>
+              </p>
+              {/* Copyright text with dynamic year */}
+              <p className="text-sm mt-4 text-gray-300">
+                Copyright &copy; {currentYear} - Jasiri labs Tech
               </p>
             </div>
           </div>
