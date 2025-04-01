@@ -36,23 +36,22 @@ const LoginPage = () => {
         {/* Overlay */}
         <div className="fixed inset-0 bg-black/60" />
 
-
+        {/* School Logo at Top-Left */}
+        <div className="fixed top-8 left-8 z-20 p-2 w-16 h-16 md:w-24 md:h-24 flex items-center justify-center">
+          <Image
+            src="/logo.png"
+            alt="School Logo"
+            width={48}
+            height={48}
+            className="object-contain w-120" // Adjusted sizes for consistency
+            priority
+            quality={100}
+          />
+        </div>
 
         {/* Content */}
-        <div className="relative grid md:grid-cols-2 items-center gap-10 max-w-6xl max-md:max-w-md w-full z-10">
+        <div className="relative grid md:grid-cols-2 items-center gap-10 max-w-6xl max-md:max-w-md w-full z-10 pt-24 md:pt-0">
           <div>
-                    {/* School Logo at Top-Left */}
-        <div className="fixed top-8 left-8 z-20 p-2 w-16 h-16 md:w-24 md:h-24 flex items-center justify-center">
-        <Image
-          src="/logo.png"
-          alt="School Logo"
-          width={48}  
-          height={48}
-          className="object-contain w-120 md:w-120" 
-          priority
-          quality={100} 
-        />
-      </div>
             <h2 className="lg:text-5xl text-3xl font-bold lg:leading-[57px] text-white">
               <span className="bg-gradient-to-r from-green-600 to-blue-600 text-transparent bg-clip-text">
                 SchoolConnect
@@ -111,7 +110,7 @@ const LoginPage = () => {
             </form>
 
             {/* Moved "Don't have an account?" below the form */}
-            <p className="text-sm mt-4 items-center justify-center text-white text-center md:text-right">
+            <p className="text-sm mt-4 text-white text-center">
               Don&apos;t have an account?{" "}
               <a href="javascript:void(0);" className="text-blue-500 font-medium hover:underline ml-1">
                 Register here
