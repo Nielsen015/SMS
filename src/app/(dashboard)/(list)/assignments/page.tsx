@@ -29,7 +29,7 @@ const renderRow = (item:AssignmentList)=>(
     {item.lesson.subject.name}
     </td>
     <td>{item.lesson.class.name}</td>
-    <td className="hidden md:table-cell">{item.lesson.teacher.name}</td>
+    <td className="hidden md:table-cell">{`${item.lesson.teacher.name} ${item.lesson.teacher.surname}`}</td>
     <td className="hidden md:table-cell">{new Intl.DateTimeFormat('en-GB').format(item.dueDate)}</td>
     <td>
       <div className='flex items-center gap-2'>
