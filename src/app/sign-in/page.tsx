@@ -43,7 +43,7 @@ const LoginPage = () => {
             alt="School Logo"
             width={48}
             height={48}
-            className="object-contain w-120" // Adjusted sizes for consistency
+            className="object-contain w-120"
             priority
             quality={100}
           />
@@ -63,7 +63,7 @@ const LoginPage = () => {
             </p>
           </div>
 
-          <div className="flex flex-col items-center md:items-end">
+          <div className="flex flex-col items-center">
             <form className="max-w-md w-full bg-white/80 p-6 rounded-lg shadow-lg">
               <h3 className="text-slate-900 lg:text-3xl text-2xl font-bold mb-8">
                 Sign in
@@ -109,13 +109,15 @@ const LoginPage = () => {
               </div>
             </form>
 
-            {/* Moved "Don't have an account?" below the form */}
-            <p className="text-sm mt-4 text-white text-center">
-              Don&apos;t have an account?{" "}
-              <a href="javascript:void(0);" className="text-blue-500 font-medium hover:underline ml-1">
-                Register here
-              </a>
-            </p>
+            {/* Centered "Don't have an account?" text */}
+            <div className="max-w-md w-full text-center">
+              <p className="text-sm mt-4 text-white">
+                Don&apos;t have an account?{" "}
+                <a href="javascript:void(0);" className="text-blue-500 font-medium hover:underline ml-1">
+                  Register here
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
