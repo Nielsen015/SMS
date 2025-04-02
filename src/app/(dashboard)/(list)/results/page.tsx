@@ -37,9 +37,9 @@ const renderRow = (item:ResultList)=>(
     <td className="flex items-center gap-4 p-4">
     {item.title}
     </td>
-    <td>`${item.studentName} ${item.studentSurname}`</td>
+    <td>{`${item.studentName} ${item.studentSurname}`}</td>
     <td className="hidden md:table-cell">{item.score}</td>
-    <td className="hidden md:table-cell">`${item.teacherName} ${item.teacherSurname}`</td>
+    <td className="hidden md:table-cell">{`${item.teacherName} ${item.teacherSurname}`}</td>
     <td className="hidden md:table-cell">{item.className}</td>
     <td className="hidden md:table-cell">{new Intl.DateTimeFormat('en-GB').format(item.startTime)}</td>
     <td>
