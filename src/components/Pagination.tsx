@@ -19,7 +19,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
   const generatePages = () => {
     const pages: (number | string)[] = [];
 
-    if (totalPages <= 4) {
+    if (totalPages <= 6) {
       pages.push(...Array.from({ length: totalPages }, (_, i) => i + 1));
     } else {
       // Always show the first page

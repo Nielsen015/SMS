@@ -12,7 +12,7 @@ export default function DashboardLayout({
   return (
     <div className="h-screen flex">
       {/* Add PageLoader here */}
-      {/* <PageLoader />  */}
+      <PageLoader /> 
 
       {/* LEFT */}
       <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4">

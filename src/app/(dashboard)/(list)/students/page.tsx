@@ -76,9 +76,20 @@ const StudentListPage = async (
             };
             break;
             case 'search':
-              query.name = {
-                contains:value, mode: 'insensitive'
-              };
+              query.OR =[
+                {
+                      name: { contains: value, mode: 'insensitive' }
+                },
+                {
+                      id: { contains: value, mode: 'insensitive' }
+                },
+                {
+
+                    class: {
+                      name: { contains: value, mode: 'insensitive' }
+                    }
+                }
+              ];
               break;
             default:
               break;
