@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 // commented for react calendar
 // import 'primereact/resources/themes/lara-light-blue/theme.css';  // Choose your theme
@@ -20,8 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body className={inter.className}>{children}</body>
     </html>
+    </ClerkProvider>
   );
 }
