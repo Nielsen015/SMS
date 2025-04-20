@@ -1,9 +1,9 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { role } from "@/lib/data";
+import { currentUser } from "@clerk/nextjs/server"; // Import currentUser (but we won't use it directly)
+import { useUser } from "@clerk/nextjs"; // Use this Hook instead
 
 const menuItems = [
   {
@@ -92,11 +92,11 @@ const menuItems = [
         label: "Announcements",
         href: "/announcements",
         visible: ["admin", "teacher", "student", "parent"],
-      },      
+      },
       {
         icon: "/online-resource.png",
         label: "Resources",
-        href: "/announcements",
+        href: "/resources",
         visible: ["admin", "teacher", "student", "parent"],
       },
     ],
@@ -115,8 +115,8 @@ const menuItems = [
         label: "Transport",
         href: "/profile",
         visible: ["admin", "parent"],
-      },     
-       {
+      },
+      {
         icon: "/profile.png",
         label: "Profile",
         href: "/profile",
@@ -139,7 +139,16 @@ const menuItems = [
 ];
 
 const Menu = () => {
-  const pathname = usePathname();
+  const pathname = usePathname(); // Use Hook at the top level
+  const { user, isLoaded } = useUser(); // Use Clerk's useUser Hook to get the user
+
+  // If the user data is still loading, show a loading state
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  // Get the user's role from publicMetadata
+  const role = (user?.publicMetadata?.role as string);
 
   return (
     <div className="mt-4 text-sm">
@@ -162,6 +171,7 @@ const Menu = () => {
                 </Link>
               );
             }
+            return null; // Return null if the item is not visible
           })}
         </div>
       ))}

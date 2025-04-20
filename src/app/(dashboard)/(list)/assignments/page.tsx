@@ -4,9 +4,10 @@ import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
-import {assignmentsData, role } from "@/lib/data"
+// import {assignmentsData, role } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
+import { getAuthData } from "@/lib/utils/auth"
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
@@ -16,12 +17,17 @@ type AssignmentList = Assignment & {lesson:{
   class:Class,
   teacher:Teacher,
 }}
+const AssignmentListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+    // Proper auth usage
+const {role, userId} = await getAuthData();
 const columns =[
   {header:'Subject Name',accessor:'subject'},
   {header:'Class',accessor:'class'},
   {header:'Teacher',accessor:'teacher',className:'hidden md:table-cell'},
   {header:'Due date',accessor:'dueDate',className:'hidden md:table-cell'},
-  {header:'Actions',accessor:'action'},
+  ...(role === 'admin' || role === 'teacher' ? [{ header: 'Actions', accessor: 'action' }] : []),
+  // {header:'Actions',accessor:'action'},
 ]
 const renderRow = (item:AssignmentList)=>(
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
@@ -33,7 +39,7 @@ const renderRow = (item:AssignmentList)=>(
     <td className="hidden md:table-cell">{new Intl.DateTimeFormat('en-GB').format(item.dueDate)}</td>
     <td>
       <div className='flex items-center gap-2'>
-        {role === 'admin' &&(
+        {(role === 'admin' || role === 'teacher') && (
            <>
            <FormModal table="assignment" type="update" data={item} />
            <FormModal table="assignment" type="delete" id={item.id} />
@@ -52,12 +58,11 @@ const renderRow = (item:AssignmentList)=>(
     </td>
   </tr>
 ); //not returning this block
-const ExamsListPage = async (
-  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
   const query: Prisma.AssignmentWhereInput={}
 
+  query.lesson = {};
     // URL Params conditions
     if (queryparams){
       for(const [key,value] of Object.entries(queryparams)){
@@ -65,10 +70,10 @@ const ExamsListPage = async (
   
           switch(key){
             case 'teacherId':
-              query.lesson = {teacherId: value};
+              query.lesson.teacherId =  value;
             break; 
             case 'classId':
-              query.lesson ={classId: parseInt(value)};
+              query.lesson.classId = parseInt(value);
             break;
             case 'search':
               query.OR = [
@@ -101,6 +106,34 @@ const ExamsListPage = async (
           }
         }
       }
+    }
+    // ROLE CONDITIONS
+    switch (role) {
+      case 'admin':
+        break;
+      case 'teacher':
+        query.lesson.teacherId = userId!;
+        break;
+      case 'student':
+        query.lesson.class = {
+          students: {
+            some: {
+              id: userId!,
+            },
+          },
+        };
+        break;      
+      case 'parent':
+        query.lesson.class = {
+          students: {
+            some: {
+              parentId: userId!,
+            },
+          },
+        };
+        break;
+      default:
+        break;
     }
     // get teacher's data as well as count, count will be useful for pagination
   const [data,count] = await prisma.$transaction([
@@ -139,7 +172,7 @@ const ExamsListPage = async (
             {/*Download Content  */}
             <DownloadFiles />
              <BulkUpload /> 
-            {role === 'admin' &&(
+            {(role === 'admin' || role === 'teacher') && (
             //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
             //   <Image src='/plus.png' width={14} height={14} alt='' />
             // </button>
@@ -156,4 +189,4 @@ const ExamsListPage = async (
   )
 }
 
-export default ExamsListPage
+export default AssignmentListPage

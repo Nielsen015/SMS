@@ -4,48 +4,31 @@ import Head from 'next/head';
 import Image from 'next/image';
 import * as Clerk from '@clerk/elements/common';
 import * as SignIn from '@clerk/elements/sign-in';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const LoginPage = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
-  const [hasError, setHasError] = useState(false); // Track if there's an error
   const currentYear = new Date().getFullYear();
 
-  // Reset the submitting state when there's a global error (e.g., wrong credentials)
+  // Get user data from the sign-in step
+  const { isSignedIn, user, isLoaded } = useUser();
+
+  const router = useRouter();
   useEffect(() => {
-    if (hasError) {
-      setIsSubmitting(false);
+    const role = user?.publicMetadata?.role;
+
+    if (role) {
+      router.push(`/${role}`);
     }
-  }, [hasError]);
+  }, [user, router]);
 
-  const handleSubmit = () => {
-    setIsSubmitting(true); // Start the spinner
-    setHasError(false); // Reset error state
-  };
-// Get user data from the sign-in step
-const { isSignedIn, user, isLoaded } = useUser()
-
-const router = useRouter()
-useEffect(() => {
-  const role = user?.publicMetadata?.role
-
-  if(role){
-    router.push(`/${role}`)
-  }
-},[user, router])
   return (
     <>
       {/* Preload the background image */}
       <Head>
-        <link
-          rel="preload"
-          href="/wallpaper.webp"
-          as="image"
-          type="image/webp"
-        />
+        <link rel="preload" href="/wallpaper.webp" as="image" type="image/webp" />
         <style>{`
           html, body {
             height: 100%;
@@ -62,14 +45,6 @@ useEffect(() => {
               min-height: 100vh;
               min-height: calc(var(--vh, 1vh) * 100);
             }
-          }
-          /* Spinner animation */
-          .spinner {
-            animation: spin 1s linear infinite;
-          }
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
           }
         `}</style>
       </Head>
@@ -115,10 +90,7 @@ useEffect(() => {
                   Sign in
                 </h3>
 
-                <Clerk.GlobalError
-                  className="text-sm text-red mb-4"
-                  onError={() => setHasError(true)} // Set error state when there's a global error
-                />
+                <Clerk.GlobalError className="text-sm text-red mb-4" />
 
                 <div className="space-y-6">
                   <Clerk.Field name="identifier">
@@ -161,36 +133,9 @@ useEffect(() => {
 
                 <SignIn.Action
                   submit
-                  className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-gradient-to-r from-green-600 to-blue-600 hover:from-blue-600 hover:to-green-600 focus:outline-none transition-all duration-300 !mt-12 flex items-center justify-center gap-2"
-                  onClick={handleSubmit}
+                  className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-gradient-to-r from-green-600 to-blue-600 hover:from-blue-600 hover:to-green-600 focus:outline-none transition-all duration-300 !mt-12"
                 >
-                  {isSubmitting && !hasError ? (
-                    <>
-                      <svg
-                        className="spinner w-5 h-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
-                      <span>Logging in...</span>
-                    </>
-                  ) : (
-                    <span>Log in</span>
-                  )}
+                  Log in
                 </SignIn.Action>
               </SignIn.Step>
             </SignIn.Root>

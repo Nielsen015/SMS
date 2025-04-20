@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-db": "node check-db-connection.js"
   },
   "dependencies": {
     "@clerk/elements": "^0.23.13",
