@@ -4,20 +4,25 @@ import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
-import {classesData, role } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
+import { getAuthData } from "@/lib/utils/auth"
 import { Class, Prisma, Teacher } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
 
 type ClassList = Class & {supervisor: Teacher}
+const ClassListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+        // Proper auth usage
+const {role, userId} = await getAuthData();
 const columns =[
   {header:'Class Name',accessor:'name'},
   {header:'Capacity',accessor:'capacity',className:'hidden md:table-cell'},
   {header:'Grade',accessor:'grade',className:'hidden md:table-cell'},
   {header:'Supervisor',accessor:'supervisor',className:'hidden md:table-cell'},
-  {header:'Actions',accessor:'action'},
+  ...(role === 'admin' ? [{ header: 'Actions', accessor: 'action' }] : []),
+  // {header:'Actions',accessor:'action'},
 ]
 const renderRow = (item:ClassList)=>(
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
@@ -48,8 +53,6 @@ const renderRow = (item:ClassList)=>(
     </td>
   </tr>
 ); //not returning this block
-const ClassListPage = async (
-  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
   const query: Prisma.ClassWhereInput={}
