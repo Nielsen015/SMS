@@ -98,6 +98,20 @@ const renderRow = (item:EventList)=>(
         }
       }
     }
+    // Role Conditions
+  const roleConditions ={
+    teacher: {lessons:{some:{teacherId:userId!}}},
+    student: {students:{some:{id:userId!}}},
+    parent: {students:{some:{parentId:userId!}}},
+  };
+
+  query.OR=[
+    {classId: null},
+    {
+      class: roleConditions[role as keyof typeof roleConditions] || {}
+    },
+  ];
+        
     // get teacher's data as well as count, count will be useful for pagination
   const [data,count] = await prisma.$transaction([
      prisma.event.findMany({
