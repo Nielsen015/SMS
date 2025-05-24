@@ -4,19 +4,25 @@ import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
-import {lessonsData, role } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
+import { getAuthData } from "@/lib/utils/auth"
 import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
 
 type LessonList = Lesson & {teacher: Teacher} &{subject: Subject} & {class:Class}
+const LessonListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+// Proper auth usage
+const {role, userId} = await getAuthData();
+// Define columns for the table
 const columns =[
   {header:'Subject Name',accessor:'subject'},
   {header:'Class',accessor:'class'},
   {header:'Teacher',accessor:'teacher',className:'hidden md:table-cell'},
-  {header:'Actions',accessor:'action'},
+  ...(role === 'admin' ? [{ header: 'Actions', accessor: 'action' }] : []),
+  // {header:'Actions',accessor:'action'},
 ]
 const renderRow = (item:LessonList)=>(
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
@@ -46,8 +52,6 @@ const renderRow = (item:LessonList)=>(
     </td>
   </tr>
 ); //not returning this block
-const LessonListPage = async (
-  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
   const query: Prisma.LessonWhereInput={}
