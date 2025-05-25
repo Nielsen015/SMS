@@ -200,6 +200,20 @@ model Message {
   lastUpdated DateTime @updatedAt
 }
 
+model Resource {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  fileUrl     String
+  fileType    String   // e.g., 'pdf', 'video', 'csv', 'docx'
+  fileSize    Int?     // Size in bytes
+  ownerId     String   // ID of the teacher/admin who uploaded
+  owner       String    // 'teacher' or 'admin'
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isPublic    Boolean  @default(true) // Controls visibility to students
+}
+
 enum UserSex {
   MALE
   FEMALE

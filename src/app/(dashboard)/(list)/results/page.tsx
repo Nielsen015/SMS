@@ -4,9 +4,9 @@ import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
-import {resultsData, role } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
+import { getAuthData } from "@/lib/utils/auth"
 import { Prisma, Result } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
@@ -23,6 +23,11 @@ type ResultList = {
   className: string;
   startTime: Date,
 }
+const ResultsListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+// Proper auth usage
+const {role, userId} = await getAuthData();
+// Define columns for the table
 const columns =[
   {header:'Title',accessor:'title'},
   {header:'Student',accessor:'student'},
@@ -30,7 +35,8 @@ const columns =[
   {header:'Teacher',accessor:'teacher',className:'hidden md:table-cell'},
   {header:'Class',accessor:'class',className:'hidden md:table-cell'},
   {header:'Date',accessor:'date',className:'hidden md:table-cell'},
-  {header:'Actions',accessor:'action'},
+  ...(role === 'admin' || role === 'teacher' ? [{ header: 'Actions', accessor: 'action' }] : []),
+  // {header:'Actions',accessor:'action'},
 ];
 const renderRow = (item:ResultList)=>(
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
@@ -44,7 +50,7 @@ const renderRow = (item:ResultList)=>(
     <td className="hidden md:table-cell">{new Intl.DateTimeFormat('en-GB').format(item.startTime)}</td>
     <td>
       <div className='flex items-center gap-2'>
-        {role === 'admin' &&(
+        {(role === 'admin' || role === 'teacher') &&(
         // <Link href={`/list/teachers/${item.id}`}>
         // <button className='w-7 h-7 flex items-center justify-center bg-sky rounded-full' aria-label="view">
         //   <Image src='/edit.png' alt='' width={16} height={16} />
@@ -63,8 +69,6 @@ const renderRow = (item:ResultList)=>(
     </td>
   </tr>
 ); //not returning this block
-const ResultsListPage = async (
-  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
   const query: Prisma.ResultWhereInput={}
@@ -89,11 +93,24 @@ const ResultsListPage = async (
                     }
                 },
                 {
-                    student: {
-                      name: { contains: value, mode: 'insensitive' },
-                      surname: { contains: value, mode: 'insensitive' },
-                      id: { contains: value, mode: 'insensitive' }
+                    assignment: {
+                      title: { contains: value, mode: 'insensitive' }
                     }
+                },
+                {
+                  student: {
+                    OR: [
+                      { name: { contains: value, mode: 'insensitive' } },
+                      { surname: { contains: value, mode: 'insensitive' } },
+                      { id: { contains: value, mode: 'insensitive' } },
+                      { 
+                        AND: [
+                          { name: { contains: value.split(' ')[0], mode: 'insensitive' } },
+                          { surname: { contains: value.split(' ')[1] || '', mode: 'insensitive' } }
+                        ]
+                      }
+                    ]
+                  }
                 },
               ];
               
@@ -103,6 +120,28 @@ const ResultsListPage = async (
           }
         }
       }
+    }
+
+    // Role Conditions
+    switch (role) {
+      case 'admin':
+        break;
+      case 'teacher':
+        query.OR = [ 
+          {exam: {lesson: {teacherId: userId!} }},
+          {assignment: {lesson: {teacherId: userId!} } }
+        ];
+        break
+      case 'student':
+        query.studentId = userId!;
+        break;
+      case 'parent':
+        query.student = {
+          parentId: userId!
+        }
+        break;
+      default:
+        break;
     }
     // get teacher's data as well as count, count will be useful for pagination
   const [dataResponse,count] = await prisma.$transaction([
@@ -173,7 +212,7 @@ const ResultsListPage = async (
             </button>
             <DownloadFiles />
             <BulkUpload /> 
-            {role === 'admin' &&(
+            {role === 'admin' || role === 'teacher' &&(
             //   <button className='w-8 h-8 flex items-center justify-center bg-yellow rounded-full' aria-label="filter">
             //   <Image src='/plus.png' width={14} height={14} alt='' />
             // </button>

@@ -22,7 +22,7 @@ const columns =[
   {header:'Class',accessor:'class'},
   {header:'Teacher',accessor:'teacher',className:'hidden md:table-cell'},
   ...(role === 'admin' ? [{ header: 'Actions', accessor: 'action' }] : []),
-  // {header:'Actions',accessor:'action'},
+  // {header:'Actions',accessor: 
 ]
 const renderRow = (item:LessonList)=>(
   <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purpleLight">
