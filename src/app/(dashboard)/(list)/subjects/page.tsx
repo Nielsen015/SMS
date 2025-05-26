@@ -4,14 +4,19 @@ import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
 import TableSearch from "@/components/TableSearch"
-import {role, subjectsData } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
+import { getAuthData } from "@/lib/utils/auth"
 import { Prisma, Subject, Teacher } from "@prisma/client"
 import Image from 'next/image'
 import Link from "next/link"
 
 type SubjectList = Subject & {teachers:Teacher[]}
+const SubjectListPage = async (
+  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
+// Proper auth usage
+const {role,userId} = await getAuthData();
+// Define columns for the table
 const columns =[
   {header:'Subject Name',accessor:'name'},
   {header:'Teachers',accessor:'teachers',className:'hidden md:table-cell'},
@@ -44,8 +49,6 @@ const renderRow = (item:SubjectList)=>(
     </td>
   </tr>
 ); //not returning this block
-const SubjectListPage = async (
-  {searchParams}:{searchParams:{[key:string]:string | undefined}}) => {
   const {page, ...queryparams} = searchParams;
   const p = page? parseInt(page): 1;
   const query: Prisma.SubjectWhereInput={}
