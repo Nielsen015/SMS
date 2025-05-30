@@ -1,14 +1,34 @@
 import prisma from "@/lib/prisma";
+import { getAuthData } from "@/lib/utils/auth";
 
 const EventList = async ({ dateParam }: { dateParam: string | undefined }) => {
-  const date = dateParam ? new Date(dateParam) : new Date();
+  // getting the roles
+  const { role, userId } = await getAuthData();
+  
+  const roleConditions = {
+    admin: {},
+    teacher: { lessons: { some: { teacherId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } }
+  };
 
+  const date = dateParam ? new Date(dateParam) : new Date();
+  
   const data = await prisma.event.findMany({
     where: {
       startTime: {
         gte: new Date(date.setHours(0, 0, 0, 0)),
         lte: new Date(date.setHours(23, 59, 59, 999)),
       },
+      // role access to view events
+      ...(role !== 'admin' && {
+        OR: [
+          { classId: null },
+          {
+            class: roleConditions[role as keyof typeof roleConditions] || {}
+          }
+        ]
+      })
     },
   });
 
