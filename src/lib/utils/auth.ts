@@ -5,13 +5,15 @@ export async function getAuthData() {
     const { userId, sessionClaims } = await auth();
     return {
       userId,
-      role: (sessionClaims?.metadata as { role?: string })?.role
+      role: (sessionClaims?.metadata as { role?: string })?.role,
+      sessionClaims
     };
   } catch (error) {
     console.error("Error getting auth data:", error);
     return {
       userId: undefined,
-      role: undefined
+      role: undefined,
+      sessiomClaims: undefined
     };
   }
 }
