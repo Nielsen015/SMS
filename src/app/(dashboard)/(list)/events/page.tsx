@@ -105,7 +105,7 @@ const renderRow = (item:EventList)=>(
     parent: {students:{some:{parentId:userId!}}},
   };
 
-  if (role !== 'admin'){
+  if(role !== 'admin'){
     query.OR = [
       {classId: null},
       {

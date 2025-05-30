@@ -1,8 +1,12 @@
 import Annoucements from "@/components/Annoucements"
 import BigCalendar from "@/components/Bigcalendar"
-import TermCalendar from "@/components/TermCalendar"
+import TermCalendarContainer from "@/components/TermCalendarContainer"
 
-const StudentPage = () => {
+const StudentPage = ({
+  searchParams,
+}: {
+  searchParams: {[keys: string]: string | undefined}
+})=> {
     return (
       <div className="p-4 flex gap-4 flex-col xl:flex-row">
         {/* Left */}
@@ -14,7 +18,7 @@ const StudentPage = () => {
         </div>
         {/* Right */}
         <div className='w-full xl:w-1/3 flex flex-col gap-8'>
-        <TermCalendar />
+        <TermCalendarContainer searchParams={searchParams} />
         <Annoucements /></div>
       </div>
     )
