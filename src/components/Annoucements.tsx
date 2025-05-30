@@ -1,7 +1,3 @@
-'use client';
-
-import { Container } from "postcss";
-
 const Annoucements = () => {
   return (
     <div className='bg-white p-4 rounded-md'>

@@ -105,12 +105,14 @@ const renderRow = (item:EventList)=>(
     parent: {students:{some:{parentId:userId!}}},
   };
 
-  query.OR=[
-    {classId: null},
-    {
-      class: roleConditions[role as keyof typeof roleConditions] || {}
-    },
-  ];
+  if (role !== 'admin'){
+    query.OR = [
+      {classId: null},
+      {
+        class: roleConditions[role as keyof typeof roleConditions] || {}
+      },
+    ];
+  }
         
     // get teacher's data as well as count, count will be useful for pagination
   const [data,count] = await prisma.$transaction([
