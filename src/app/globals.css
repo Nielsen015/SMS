@@ -1,6 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+  
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 
 .react-calendar {
   width: 100% !important;
@@ -76,7 +87,10 @@
   margin: 10px !important;
   width: 99% !important;
 }
-
+.rbc-day-slot .rbc-event{
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
 .rbc-event:nth-child(1) {
   background-color: #e2f8ff !important;
 }
@@ -102,7 +116,116 @@
   background-color: #fdf2fb !important;
 }
 
+.rbc-event {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 5px !important;
+  margin: 5px !important;
+}
 .rbc-event-label{
   color: gray !important;
-  margin-bottom: 5px;
+  margin-bottom: 3px !important;
+}
+
+/* @media (max-width: 124px) {
+
+.rbc-month-view {
+  display: flex !important;
+}
+} */
+
+/* remove blue hight on phone */
+.PhoneInputInput:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+}
+
+/* added CSS */
+/* Calendar Container Styles */
+.rbc-calendar {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background-color: white !important;
+}
+
+/* Time View Styles */
+.rbc-time-view {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.rbc-time-content {
+  flex: 1 !important;
+  overflow: hidden !important;
+  scrollbar-width: none !important; /* Firefox */
+}
+
+/* Hide scrollbars */
+.rbc-time-content::-webkit-scrollbar,
+.rbc-time-view::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Time Slot Improvements */
+.rbc-timeslot-group {
+  min-height: 60px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.rbc-time-gutter .rbc-timeslot-group {
+  padding: 0 10px !important;
+  font-size: 12px !important;
+  color: #666 !important;
+}
+
+/* Event Styling */
+.rbc-event {
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+  padding: 4px 6px !important;
+  margin: 2px 4px !important;
+}
+
+.rbc-event-content {
+  white-space: normal !important;
+  overflow: visible !important;
+  line-height: 1.3 !important;
+}
+
+.rbc-event-label {
+  font-weight: 600 !important;
+  margin-bottom: 2px !important;
+  color: #444 !important;
+}
+
+/* Color Variations */
+.rbc-event:nth-child(odd) {
+  background-color: #e2f8ff !important;
+  border-left: 3px solid #4ab8e8 !important;
+}
+
+.rbc-event:nth-child(even) {
+  background-color: #f2f1ff !important;
+  border-left: 3px solid #7a6ff0 !important;
+}
+
+/* Header Adjustments */
+.rbc-time-header {
+  display: none !important;
+}
+
+/* Remove all-day section */
+.rbc-time-view .rbc-allday-cell {
+  display: none !important;
+}
+
+/* Term Calendar Specific */
+.term-calendar {
+  max-height: 300px !important;
+  overflow: hidden !important;
 }
