@@ -1,5 +1,6 @@
 import BulkUpload from "@/components/BulkUpload"
 import DownloadFiles from "@/components/DownloadFiles"
+import FormContainer from "@/components/FormContainer"
 import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Tables from "@/components/Tables"
@@ -40,8 +41,8 @@ const renderRow = (item:SubjectList)=>(
         //   <Image src='/delete.png' alt='' width={16} height={16} />
         // </button>
         <>
-        <FormModal table="subject" type="update" data={item} />
-        <FormModal table="subject" type="delete" id={item.id} />
+        <FormContainer table="subject" type="update" data={item} />
+        <FormContainer table="subject" type="delete" id={item.id} />
         </>
       )}
         

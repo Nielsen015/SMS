@@ -132,7 +132,8 @@ const TeacherForm = ({ type, data, }: { type: 'create' | 'update'; data?: any; }
       <option value='female'>Female</option>
     </select>
     {errors.gender?.message && <p className="text-xs text-[#be2326]">{errors.gender?.message.toString()}</p>}
-    </div>        <div className='flex flex-col gap-2 w-full md:w-1/4 justify-center'>
+    </div>        
+    <div className='flex flex-col gap-2 w-full md:w-1/4 justify-center'>
     <label htmlFor="img" className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer" >
       <Image alt='' src='/upload.png' width={28} height={28} />
       <span>Upload a Photo</span>
